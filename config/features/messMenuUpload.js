@@ -6,7 +6,8 @@ const newsLocalProvider = {
       baseUrl: '/public/messFiles',
     },
   };
- 
+
+  
 module.exports.messFileUpload = uploadFeature({
     provider: { local: newsLocalProvider },
     validation: { mimeTypes: ['image/png','text/csv','image/jpeg']},
