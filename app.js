@@ -1,77 +1,41 @@
-const AdminJS = require('adminjs')
-const AdminJSExpress = require('@adminjs/express')
+require('dotenv').config();
 const express = require('express')
-// const Connect = require('connect-pg-simple')
 const session = require('express-session')
 const mongoose = require('mongoose');
-const AdminJSMongoose = require('@adminjs/mongoose')
-// const orm =  require('@admin-bro/typeorm');
-// const Database = orm.Database;
-// const Resource = orm.Resource
-AdminJS.registerAdapter({
-  Resource: AdminJSMongoose.Resource,
-  Database: AdminJSMongoose.Database,
-})
-
-
-const User = require("./models/User")
-const newsEvent = require("./models/newsevent");
-const newsSchema = require('./models/newsevent');
+mongoose.set('strictQuery', true);
+const app = express();
+app.use(express.json());
+app.use('/public', express.static('public'));
 
 const PORT = 3000
 
-
-
-const DEFAULT_ADMIN = {
-    email: 'admin@example.com',
-    password: 'password',
+let dbURI;
+if (process.env.NODE_ENV === "production") {
+  dbURI = process.env.PROD_MONGO_URI;
+} else {
+  dbURI = process.env.DEV_MONGO_URI;
 }
+mongoose.connect(dbURI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
-const authenticate = async (email, password) => {
-    if (email === DEFAULT_ADMIN.email && password === DEFAULT_ADMIN.password) {
-        return Promise.resolve(DEFAULT_ADMIN)
-    }
-    return null
-}
+const db = mongoose.connection;
+
+db.on("error", console.error.bind(console, "Error connecting to MongoDB"));
+
+db.once("open", function () {
+  console.log("Connected to Database :: MongoDB");
+});
+
+app.use("/admin", require("./routes/admin.router"));
+app.use("",require("./routes/adminRoutes"));
+
 
 const start = async () => {
-    const app = express();
-    await mongoose.connect('mongodb://0.0.0.0:27017/adminjs');
-   
-    const adminOptions = {
-      // We pass Category to `resources`
-      resources: [User,newsSchema],
-    }
-    // Please note that some plugins don't need you to create AdminJS instance manually,
-    // instead you would just pass `adminOptions` into the plugin directly,
-    // an example would be "@adminjs/hapi"
-  
-    const admin = new AdminJS(adminOptions)
-    const adminRouter = AdminJSExpress.buildAuthenticatedRouter(
-        admin,
-        {
-          authenticate,
-          cookieName: 'adminjs',
-          cookiePassword: 'sessionsecret',
-        },
-        null,
-        {
-        //   store: sessionStore,
-          resave: true,
-          saveUninitialized: true,
-          secret: 'sessionsecret',
-          cookie: {
-            httpOnly: process.env.NODE_ENV === 'production',
-            secure: process.env.NODE_ENV === 'production',
-          },
-          name: 'adminjs',
-        }
-      )
-
-    app.use(admin.options.rootPath, adminRouter)
 
     app.listen(PORT, () => {
-        console.log(`AdminJS started on http://localhost:${PORT}${admin.options.rootPath}`)
+        console.log(`AdminJS started on http://localhost:${PORT}/admin`)
 
     })
 }
