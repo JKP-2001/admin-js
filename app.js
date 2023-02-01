@@ -4,6 +4,8 @@ const session = require('express-session')
 const mongoose = require('mongoose');
 mongoose.set('strictQuery', true);
 const app = express();
+
+
 app.use(express.json());
 app.use('/public', express.static('public'));
 
@@ -33,7 +35,6 @@ app.use("",require("./routes/adminRoutes"));
 
 
 const start = async () => {
-
     app.listen(PORT, () => {
         console.log(`AdminJS started on http://localhost:${PORT}/admin`)
 

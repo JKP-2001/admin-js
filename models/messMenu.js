@@ -4,8 +4,18 @@ const hostel = ["Barak","Brahmaputra","Dhanisri","Dibang","Dihing","Disang","Kam
 
 const days = ['SUNDAY','MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY',]
 
+
+const UploadedFile = new mongoose.Schema({
+  path: String,
+  type: String,
+  size: Number,
+  folder: String,
+  filename: String
+})
+
 const messMenuSchema = new mongoose.Schema({
   hostel: { type: String, required: true, enum:hostel, unique:true },
+  uploadedFile:UploadedFile,
   menu: [
     {
       day: { type: String, required: true, enum:days,sparse:true },

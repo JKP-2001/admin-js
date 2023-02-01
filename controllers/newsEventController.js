@@ -1,13 +1,22 @@
 const messMenuModel = require("../models/messMenu");
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
+const Admin = require("../models/Admin");
+const { getClubType } = require("../functions");
 
-module.exports.beforeNewMenu = async (request,response, { currentAdmin }) => {
+module.exports.beforeNewEvent = async (request,{ currentAdmin }) => {
     const _id = currentAdmin._id;
-    const user = 
-    request.payload = {
-        ...request.payload
-    };
-
+    const user = await Admin.findById(_id);
+    if(user){
+        const clubName = user.club;
+        const clubType = getClubType(clubName);
+        request.payload = {
+            ...request.payload,
+            author:user._id,
+            creationDate:Date.now(),
+            clubName,
+            clubType
+        };
+    }
     return request;
 };
 
@@ -15,8 +24,9 @@ module.exports.beforeNewMenu = async (request,response, { currentAdmin }) => {
 module.exports.afterNewEvent = async (request,response) => {
     request.payload = {
         ...request.payload,
+        creationDate:Date.now()
     };
-    console.log({res:request.files});
+    // console.log({res:request.files});
     // let menu = await messMenuModel.findById(request.record.params._id);
     // if(menu){
     //     const newMenu = await messMenuModel.findByIdAndUpdate(request.record.params._id,{dateCreated:Date.now()});
