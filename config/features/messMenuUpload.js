@@ -7,11 +7,11 @@ const newsLocalProvider = {
     },
   };
 
-  
+
 module.exports.messFileUpload = uploadFeature({
     provider: { local: newsLocalProvider },
     validation: { mimeTypes: ['image/png','text/csv','image/jpeg']},
-    validate:{maxSize:1024*1024},
+    validate:{ maxSize:1024*1024},
     properties: {
       key: 'uploadedFile.path',
       bucket: 'uploadedFile.folder',

@@ -1,8 +1,6 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose")
 
-const {
-  Schema
-} = mongoose;
+const { Schema } = mongoose;
 
 const lastUpdateSchema = new Schema({
   food: Date,
@@ -11,6 +9,6 @@ const lastUpdateSchema = new Schema({
   contact: Date,
 });
 
-const LastUpdate = mongoose.model("last_update", lastUpdateSchema);
+const lastUpdate = mongoose.model("last_update", lastUpdateSchema);
 
-export default LastUpdate;
+module.exports =  lastUpdate;

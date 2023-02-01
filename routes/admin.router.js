@@ -21,9 +21,40 @@ const Admin = require("../models/Admin")
 const newsEvent = require("../models/newsevent");
 const messMenu = require('../models/messMenu');
 const { globalAccess, hmcAccess } = require('../config/adminjs/roleBasedAccess');
-const { adminOptions, hmcOptions, clubAccess, clubOptions } = require('../config/adminjs/resourceOptions');
+const { adminOptions, hmcOptions, clubAccess, clubOptions, campusTravel } = require('../config/adminjs/resourceOptions');
 const { newsFileUpload } = require("../config/features/newsFileUpload");
 const { messFileUpload } = require("../config/features/messMenuUpload");
+
+const {
+  User,
+  spardhaEventModel,
+  gcCompetitionsStoreModel,
+  spardhaOverallStandingsModel,
+  spardhaResultModel,
+  busTiming,
+  buyDetails,
+  TravelPostModel,
+  TravelChatModel,
+  ReplyPostModel,
+  contactParent,
+  contactsSubsection,
+  ferryTiming,
+  foodItems,
+  foodOutlets,
+  foundItem,
+  lastUpdate,
+  LostAndFoundDetails,
+  // messMenuItemModelDetails,
+  // newsModel,
+  role,
+  BuyAndSellDetails,
+  Time,
+} = require("../models/index")
+const { gcNavigation, timingNavigation, cabSharingNavigation, foodNavigation, lostAndFoundNavigaion, buyAndSellNavigation } = require("../navigations");
+
+
+
+
 // const { default: Login } = require("../Components/login.jsx");
 
 const usersNavigation = {
@@ -48,7 +79,121 @@ const adminRouter = new AdminJS({
       resource: newsEvent,
       options: clubOptions,
       features: [newsFileUpload],
-    }
+    },
+    {
+      resource: TravelPostModel,
+      options:campusTravel
+      // options: clubOptions,
+      // features: [c],
+    },
+    {
+      resource: User,
+      options: {
+        navigation: usersNavigation,
+      },
+    },
+    {
+      resource: spardhaEventModel,
+      options: {
+        navigation: gcNavigation,
+      },
+    },
+    {
+      resource: gcCompetitionsStoreModel,
+      options: {
+        navigation: gcNavigation,
+      },
+    },
+    {
+      resource: spardhaOverallStandingsModel,
+      options: {
+        navigation: gcNavigation,
+      },
+    },
+    {
+      resource: spardhaResultModel,
+      options: {
+        navigation: gcNavigation,
+      },
+    },
+    {
+      resource: busTiming,
+      options: {
+        navigation: timingNavigation,
+      },
+    },
+    {
+      resource: ferryTiming,
+      options: {
+        navigation: timingNavigation,
+      },
+    },
+    {
+      resource: Time,
+      options: {
+        navigation: timingNavigation,
+      },
+    },
+    {
+      resource: TravelPostModel,
+      options: {
+        navigation: cabSharingNavigation,
+      },
+    },
+    {
+      resource: TravelChatModel,
+      options: {
+        navigation: cabSharingNavigation,
+      },
+    },
+    {
+      resource: ReplyPostModel,
+      options: {
+        navigation: cabSharingNavigation,
+      },
+    },
+    {
+      resource: foodItems,
+      options: {
+        navigation: foodNavigation,
+      },
+    },
+    {
+      resource: foodOutlets,
+      options: {
+        navigation: foodNavigation,
+      },
+    },
+    {
+      resource: lastUpdate,
+      options: {
+        navigation: foodNavigation,
+      },
+    },
+    {
+      resource: LostAndFoundDetails,
+      options: {
+        navigation: lostAndFoundNavigaion,
+      },
+    },
+    {
+      resource: foundItem,
+      options: {
+        navigation: lostAndFoundNavigaion,
+      },
+    },
+    {
+      resource: buyDetails,
+      options: {
+        navigation: buyAndSellNavigation,
+      },
+    },
+    {
+      resource: BuyAndSellDetails,
+      options: {
+        navigation: buyAndSellNavigation,
+      },
+    },
   ],
   rootPath: "/admin",
   componentLoader,

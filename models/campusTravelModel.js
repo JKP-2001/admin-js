@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const TravelPostSchema = new mongoose.Schema({
     "email": { type: String, required: true },
@@ -27,4 +27,4 @@ const TravelPostModel = mongoose.model("TravelPost", TravelPostSchema);
 const TravelChatModel = mongoose.model("TravelChat", ChatSchema);
 const ReplyPostModel = mongoose.model("TravelChatReply", ReplyPostSchema);
 
-export {TravelPostModel, TravelChatModel, ReplyPostModel};
+module.exports = {TravelPostModel, TravelChatModel, ReplyPostModel};

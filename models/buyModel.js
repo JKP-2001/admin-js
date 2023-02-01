@@ -1,15 +1,17 @@
-import { Schema, model } from "mongoose";
+const mongoose = require("mongoose")
 
-const BuyDetailsSchema = new Schema({
-    title: { type: String, required: true },
-    price: { type: String, required: true },
-    phonenumber: { type: String, required: true },
-    dateCreated: { type: Date, default: Date.now },
-    description: { type: String, required: true },
-    imageURL: { type: String, required: true },
-    compressedImageURL: { type: String, required: true },
-    email: { type: String, required: true },
-    username: { type: String, required: true },
+const BuyDetailsSchema = new mongoose.Schema({
+  title: { type: String, required: true },
+  price: { type: String, required: true },
+  phonenumber: { type: String, required: true },
+  date: { type: Date, default: Date.now },
+  description: { type: String, required: true },
+  imageURL: { type: String, required: true },
+  compressedImageURL: { type: String, required: true },
+  email: { type: String, required: true },
+  username: { type: String, required: true },
 });
 
-export default model("buyItem", BuyDetailsSchema);
+const buyDetails = mongoose.model("buyItem", BuyDetailsSchema);
+
+module.exports =  buyDetails;

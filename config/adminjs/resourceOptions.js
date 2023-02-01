@@ -4,7 +4,7 @@ const { afterNewEvent, beforeNewEvent } = require("../../controllers/newsEventCo
 const { globalAccess, adminAccess, clubAccess, hmcAccess } = require("./roleBasedAccess");
 
 const AdminJS = require('adminjs');
-const { usersNavigation, foodNavigation, clubNavigation } = require("../../navigations");
+const { usersNavigation, foodNavigation, clubNavigation, cabSharingNavigation } = require("../../navigations");
 
 module.exports.adminOptions = {
     id: "Users",
@@ -163,4 +163,16 @@ module.exports.clubOptions = {
         bulkDelete:{ isAccessible: globalAccess},
     },
     navigation:clubNavigation
+}
+
+module.exports.campusTravel = {
+    id:"Travel",
+    actions: {
+        list: { isAccessible: globalAccess},
+        edit: { isAccessible: globalAccess},
+        delete: { isAccessible: globalAccess},
+        new: { isAccessible: globalAccess},
+        bulkDelete:{ isAccessible: globalAccess},
+    },
+    navigation:cabSharingNavigation
 }
