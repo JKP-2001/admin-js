@@ -3,6 +3,14 @@ const foodItems = require("../models/foodItems.js")
 
 const { Schema } = mongoose;
 
+const UploadedFile = new mongoose.Schema({
+  path: String,
+  type: String,
+  size: Number,
+  folder: String,
+  filename: String
+})
+
 const foodOutletsSchema = new Schema({
   name: String,
   caption: String,
@@ -14,7 +22,7 @@ const foodOutletsSchema = new Schema({
   address: String,
   tags: [{ type: String }],
   menu: [foodItems.schema],
-  imageURL: String,
+  imageURL: UploadedFile,
   // last_update: Date,
 });
 

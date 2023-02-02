@@ -1,10 +1,10 @@
 const { beforeNewUser } = require("../../controllers/adminContoller");
 const { beforeNewMenu, afterNewMenu, beforeMenuListing } = require("../../controllers/messMenuController");
 const { afterNewEvent, beforeNewEvent, beforeNewsListing } = require("../../controllers/newsEventController");
-const { globalAccess, adminAccess, clubAccess, hmcAccess } = require("./roleBasedAccess");
+const { globalAccess, adminAccess, clubAccess, hmcAccess, onlyhmcAccess, onlyClubAccess } = require("./roleBasedAccess");
 
 const AdminJS = require('adminjs');
-const { usersNavigation, foodNavigation, clubNavigation, cabSharingNavigation, buyAndSellNavigation, lostAndFoundNavigaion } = require("../../navigations");
+const { usersNavigation, foodNavigation, clubNavigation, cabSharingNavigation, buyAndSellNavigation, lostAndFoundNavigaion, timingNavigation } = require("../../navigations");
 const { beforeNewTravel, beforeDelEvent, afterNewTravel, beforeTravelPostListing } = require("../../controllers/travelController");
 
 
@@ -103,7 +103,7 @@ module.exports.hmcOptions = {
     },
     actions: {
         list: { isAccessible: hmcAccess, before: beforeMenuListing },
-        edit: { isAccessible: hmcAccess, before: beforeNewMenu },
+        edit: { isAccessible: onlyhmcAccess, before: beforeNewMenu },
         delete: { isAccessible: globalAccess },
         new: { isAccessible: globalAccess, before: beforeNewMenu },
         bulkDelete: { isAccessible: globalAccess },
@@ -192,10 +192,10 @@ module.exports.clubOptions = {
     },
     actions: {
         list: { isAccessible: clubAccess, before: beforeNewsListing },
-        edit: { isAccessible: clubAccess },
-        delete: { isAccessible: clubAccess, },
-        new: { isAccessible: clubAccess, before: beforeNewEvent, after: afterNewEvent },
-        bulkDelete: { isAccessible: globalAccess },
+        edit: { isAccessible: onlyClubAccess },
+        delete: { isAccessible: clubAccess},
+        new: { isAccessible: onlyClubAccess, before: beforeNewEvent, after: afterNewEvent },
+        bulkDelete: { isAccessible: clubAccess },
     },
 }
 
@@ -360,11 +360,30 @@ module.exports.foundItemOptions = {
 module.exports.foodOutletOptions = {
     id:'Food Oulet',
     navigation:foodNavigation,
+    properties:{
+        _id: {
+            isVisible: {
+                list: false,
+                filter: false,
+                show: false,
+                edit: false,
+            },
+        },
+        imageURL: {
+            isVisible: {
+                list: false,
+                filter: false,
+                show: true,
+                edit: false
+            }
+        },
+
+    },
     actions: {
         list: { isAccessible: true },
-        edit: { isAccessible: globalAccess },
-        delete: { isAccessible: globalAccess },
-        new: { isAccessible: globalAccess, isAccessible:hmcAccess },
+        edit: { isAccessible: onlyhmcAccess },
+        delete: { isAccessible:hmcAccess},
+        new: { isAccessible:onlyhmcAccess },
         bulkDelete: { isAccessible: globalAccess },
     },
 }
@@ -373,12 +392,31 @@ module.exports.foodOutletOptions = {
 module.exports.foodItemOptions = {
     id:'Food Item',
     navigation:foodNavigation,
+    properties:{
+        _id: {
+            isVisible: {
+                list: false,
+                filter: false,
+                show: false,
+                edit: false,
+            },
+        },
+        image: {
+            isVisible: {
+                list: false,
+                filter: false,
+                show: true,
+                edit: false
+            }
+        },
+
+    },
     actions: {
         list: { isAccessible: true },
-        edit: { isAccessible: globalAccess },
-        delete: { isAccessible: globalAccess },
-        new: { isAccessible: globalAccess, isAccessible:hmcAccess },
-        bulkDelete: { isAccessible: globalAccess },
+        edit: { isAccessible: onlyhmcAccess },
+        delete: {isAccessible:hmcAccess},
+        new: { isAccessible:onlyhmcAccess },
+        bulkDelete: { isAccessible: globalAccess, isAccessible:hmcAccess },
     },
 }
 
@@ -392,5 +430,42 @@ module.exports.lastUpdateOption = {
         new: { isAccessible: false },
         bulkDelete: { isAccessible: false },
         filter:{isAccessible:false}
+    },
+}
+
+module.exports.busTimeOption = {
+    id:'Bus Timing',
+    navigation:timingNavigation,
+    actions: {
+        list: { isAccessible: globalAccess },
+        edit: { isAccessible: globalAccess },
+        delete: { isAccessible: globalAccess },
+        new: { isAccessible: globalAccess },
+        bulkDelete: { isAccessible: globalAccess },
+    },
+}
+
+module.exports.ferryTimeOption = {
+    id:'Ferry Timing',
+    navigation:timingNavigation,
+    actions: {
+        list: { isAccessible: globalAccess },
+        edit: { isAccessible: globalAccess },
+        delete: { isAccessible: globalAccess },
+        new: { isAccessible: globalAccess },
+        bulkDelete: { isAccessible: globalAccess },
+    },
+}
+
+
+module.exports.timeOption = {
+    id:'Timing',
+    navigation:timingNavigation,
+    actions: {
+        list: { isAccessible: globalAccess },
+        edit: { isAccessible: globalAccess },
+        delete: { isAccessible: globalAccess },
+        new: { isAccessible: globalAccess },
+        bulkDelete: { isAccessible: globalAccess },
     },
 }

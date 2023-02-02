@@ -28,3 +28,18 @@ module.exports.hmcAccess = ({ currentAdmin }) => {
     const role = getUserRole(currentAdmin.role);
     return ((currentAdmin && (role.includes('HMC') || role.includes('SUPER_ADMIN') || (process.env.NODE_ENV === 'development')))) 
 }
+
+module.exports.onlyAdminAccess = ({ currentAdmin }) => { 
+    const role = getUserRole(currentAdmin.role);
+    return ((currentAdmin && (role.includes('ADMIN') || (process.env.NODE_ENV === 'development')))) 
+}
+
+module.exports.onlyClubAccess = ({ currentAdmin }) => { 
+    const role = getUserRole(currentAdmin.role);
+    return ((currentAdmin && (role.includes('CLUB') || (process.env.NODE_ENV === 'development')))) 
+}
+
+module.exports.onlyhmcAccess = ({ currentAdmin }) => { 
+    const role = getUserRole(currentAdmin.role);
+    return ((currentAdmin && (role.includes('HMC') || (process.env.NODE_ENV === 'development')))) 
+}

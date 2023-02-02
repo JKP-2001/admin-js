@@ -21,7 +21,7 @@ const Admin = require("../models/Admin")
 const newsEvent = require("../models/newsevent");
 const messMenu = require('../models/messMenu');
 const { globalAccess, hmcAccess } = require('../config/adminjs/roleBasedAccess');
-const { adminOptions, hmcOptions, clubAccess, clubOptions, campusTravel, normalUserOptions, travelReply, travelChat, campusTravelOtions, campusTravelOptions, travelReplyOptions, travelChatOptions, buyOptions, sellOptions, lostItemOptions, foundItemOptions, foodOutletSchema, foodItemOptions, foodOutletOptions, lastUpdateOption } = require('../config/adminjs/resourceOptions');
+const { adminOptions, hmcOptions, clubAccess, clubOptions, campusTravel, normalUserOptions, travelReply, travelChat, campusTravelOtions, campusTravelOptions, travelReplyOptions, travelChatOptions, buyOptions, sellOptions, lostItemOptions, foundItemOptions, foodOutletSchema, foodItemOptions, foodOutletOptions, lastUpdateOption, busTimeOption, ferryTimeOption, timeOption } = require('../config/adminjs/resourceOptions');
 const { newsFileUpload } = require("../config/features/newsFileUpload");
 const { messFileUpload } = require("../config/features/messMenuUpload");
 
@@ -51,6 +51,7 @@ const {
   Time,
 } = require("../models/index")
 const { gcNavigation, timingNavigation, cabSharingNavigation, foodNavigation, lostAndFoundNavigaion, buyAndSellNavigation } = require("../navigations");
+const { foodItemUpload, foodOutletUpload } = require("../config/features/newFoodUpload");
 
 
 
@@ -132,29 +133,25 @@ const adminRouter = new AdminJS({
     },
     {
       resource: busTiming,
-      options: {
-        navigation: timingNavigation,
-      },
+      options: busTimeOption,
     },
     {
       resource: ferryTiming,
-      options: {
-        navigation: timingNavigation,
-      },
+      options: ferryTimeOption,
     },
     {
       resource: Time,
-      options: {
-        navigation: timingNavigation,
-      },
+      options: timeOption,
     },
     {
       resource: foodItems,
       options: foodItemOptions,
+      features:[foodItemUpload]
     },
     {
       resource: foodOutlets,
       options: foodOutletOptions,
+      features:[foodOutletUpload]
     },
     {
       resource: lastUpdate,
