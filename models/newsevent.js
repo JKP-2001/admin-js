@@ -3,6 +3,11 @@ const validator = require('validator')
 
 // Single file upload, event title, description, date object, club name
 
+const clubEnums = ["Aero Club","Anchoring Club",'Aquatic Club',"Astro Club",'Athletics Club',"Auto Club",'Badminton Club',"BasketBall Club","C&A Club","Coding Club","Cricket Club","Dance Club","Drama Club","E-Cell","Elec Club","F&E Club","Fineart Club","Football Club","Hockey Club","Hostel Affair Club","Literary Club","Movie Club","Music Club","Photography Club","Prakriti Club","Quiz Club","Robotic Club",'SAIL',"Squash Club","SWB Club",'SWC',"TT Club","Tennis Club","Volleyball Club","WeightLifting Club",];
+
+const clubTypeNums = ['technical','sports','cultural','welfare'];
+
+
 const UploadedFile = new mongoose.Schema({
     path: [String],
     type: [String],
@@ -31,15 +36,17 @@ const eventSchema = new mongoose.Schema({
     updationDate: {
         type: Date,
     },
-    uploadedFile: UploadedFile,
     clubName: {
         type: String,
-        required: true
+        required: true,
+        enum: clubEnums
     },
     clubType: {
         type: String,
-        required: true
+        required: true,
+        enum:clubTypeNums
     },
+    uploadedFile: UploadedFile,
     //   fileLocation:{
     //     type:String,
     // },

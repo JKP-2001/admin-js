@@ -23,3 +23,13 @@ module.exports.getClubType = (clubName)=>{
     
     return club_type;
 }
+
+module.exports.getUserRole = (arr)=>{
+    let result = [];
+
+    for(let i =0; i<arr.length; i++){
+        result.push(arr[i].value);
+    }
+
+    return result;
+}

@@ -1,7 +1,9 @@
 const messMenuModel = require("../models/messMenu");
 const mongoose = require("mongoose");
 const Admin = require("../models/Admin");
-const { getClubType } = require("../functions");
+const { getClubType, getUserRole } = require("../functions");
+
+
 
 module.exports.beforeNewEvent = async (request,{ currentAdmin }) => {
     const _id = currentAdmin._id;
@@ -33,6 +35,21 @@ module.exports.afterNewEvent = async (request,response) => {
     // }
     return request;
 };
+
+module.exports.beforeNewsListing = async (request, context) => {
+    const { currentAdmin } = context
+    const arr = getUserRole(currentAdmin.role);
+    if (!arr.includes('SUPER_ADMIN')) {
+        return {
+            ...request,
+            query: {
+                ...request.query,
+                'filters.clubName': currentAdmin.club ? currentAdmin.club : ''
+            }
+        }
+    }
+    return request
+}
 
 
 // import { body } from "express-validator";

@@ -1,13 +1,15 @@
 const { beforeNewUser } = require("../../controllers/adminContoller");
-const { beforeNewMenu, afterNewMenu } = require("../../controllers/messMenuController");
-const { afterNewEvent, beforeNewEvent } = require("../../controllers/newsEventController");
+const { beforeNewMenu, afterNewMenu, beforeMenuListing } = require("../../controllers/messMenuController");
+const { afterNewEvent, beforeNewEvent, beforeNewsListing } = require("../../controllers/newsEventController");
 const { globalAccess, adminAccess, clubAccess, hmcAccess } = require("./roleBasedAccess");
 
 const AdminJS = require('adminjs');
 const { usersNavigation, foodNavigation, clubNavigation, cabSharingNavigation } = require("../../navigations");
+const { beforeNewTravel, beforeDelEvent, afterNewTravel } = require("../../controllers/travelController");
+
 
 module.exports.adminOptions = {
-    id: "Users",
+    id: "Admins",
     sort: {
         sortBy: 'name',
         direction: 'asc',
@@ -16,8 +18,8 @@ module.exports.adminOptions = {
         encryptedPassword: {
             isVisible: false
         },
-        password:{
-            type:'password'
+        password: {
+            type: 'password'
         },
         _id: {
             isVisible: {
@@ -30,17 +32,45 @@ module.exports.adminOptions = {
     },
     actions: {
         list: { isAccessible: globalAccess },
-        edit: { isAccessible: globalAccess, before:beforeNewUser },
+        edit: { isAccessible: globalAccess, before: beforeNewUser },
         delete: { isAccessible: globalAccess },
-        new: { isAccessible: globalAccess, before:beforeNewUser},
-        bulkDelete:{ isAccessible: globalAccess},
+        new: { isAccessible: globalAccess, before: beforeNewUser },
+        bulkDelete: { isAccessible: globalAccess },
     },
-    navigation:usersNavigation
+    navigation: usersNavigation
+}
+
+module.exports.normalUserOptions = {
+    sort: {
+        sortBy: 'name',
+        direction: 'asc',
+    },
+    properties: {
+        microsoftid: {
+            isVisible: false
+        },
+        _id: {
+            isVisible: {
+                list: false,
+                filter: false,
+                show: false,
+                edit: false,
+            },
+        },
+    },
+    actions: {
+        list: { isAccessible: globalAccess },
+        edit: { isAccessible: globalAccess, before: beforeNewUser },
+        delete: { isAccessible: globalAccess },
+        new: { isAccessible: globalAccess, before: beforeNewUser },
+        bulkDelete: { isAccessible: globalAccess },
+    },
+    navigation: usersNavigation
 }
 
 
 module.exports.hmcOptions = {
-    id: "HMC",
+    id: "Mess",
     sort: {
         sortBy: 'hostel',
         direction: 'asc',
@@ -54,37 +84,40 @@ module.exports.hmcOptions = {
                 edit: false,
             },
         },
-        dateCreated:{
+        dateCreated: {
             isVisible: {
-                list:true,
-                filter:true,
+                list: true,
+                filter: true,
                 show: true,
                 edit: false,
             },
         },
-        uploadedFile: { isVisible: {
-            list:false,
-            filter:false,
-            show:true,
-            edit:false
-        } },
+        uploadedFile: {
+            isVisible: {
+                list: false,
+                filter: false,
+                show: true,
+                edit: false
+            }
+        },
     },
     actions: {
-        list: { isAccessible: hmcAccess},
-        edit: { isAccessible: hmcAccess, before:beforeNewMenu},
+        list: { isAccessible: hmcAccess, before:beforeMenuListing },
+        edit: { isAccessible: hmcAccess, before: beforeNewMenu },
         delete: { isAccessible: globalAccess },
-        new: { isAccessible: globalAccess, before:beforeNewMenu },
-        bulkDelete:{ isAccessible: globalAccess},
+        new: { isAccessible: globalAccess, before: beforeNewMenu },
+        bulkDelete: { isAccessible: globalAccess },
     },
-    navigation:foodNavigation
+    navigation: foodNavigation
 }
 
 module.exports.clubOptions = {
-    id:"CLUBS",
-    sort:{
-        sortBy:"creationDate",
-        direction:"desc",
+    id: "News",
+    sort: {
+        sortBy: "creationDate",
+        direction: "desc",
     },
+    navigation: clubNavigation,
     properties: {
         _id: {
             isVisible: {
@@ -94,60 +127,62 @@ module.exports.clubOptions = {
                 edit: false,
             },
         },
-        uploadedFile: { isVisible: {
-            list:false,
-            filter:false,
-            show:true,
-            edit:false
-        } },
-        author:{
-            isVisible:{
+        uploadedFile: {
+            isVisible: {
+                list: false,
+                filter: false,
+                show: true,
+                edit: false
+            }
+        },
+        author: {
+            isVisible: {
                 list: false,
                 filter: false,
                 show: true,
                 edit: false,
             }
         },
-        creationDate:{
-            isVisible:{
+        creationDate: {
+            isVisible: {
                 list: false,
                 filter: true,
                 show: true,
                 edit: false,
             }
         },
-        updationDate:{
-            isVisible:{
+        updationDate: {
+            isVisible: {
                 list: false,
                 filter: true,
                 show: true,
                 edit: false,
             }
         },
-        clubName:{
-            isVisible:{
+        clubName: {
+            isVisible: {
                 list: true,
                 filter: true,
                 show: true,
                 edit: false,
             }
         },
-        clubType:{
-            isVisible:{
+        clubType: {
+            isVisible: {
                 list: false,
                 filter: true,
                 show: true,
                 edit: false,
             }
         },
-        content:{
-            type:'richtext',
+        content: {
+            type: 'richtext',
             custom: {
                 modules: {
-                  toolbar: [['bold', 'italic']],
+                    toolbar: [['bold', 'italic']],
                 },
-              },
-            isVisible:{
+            },
+            isVisible: {
                 list: true,
                 filter: false,
                 show: true,
@@ -156,23 +191,96 @@ module.exports.clubOptions = {
         }
     },
     actions: {
-        list: { isAccessible: clubAccess},
-        edit: { isAccessible: clubAccess},
-        delete: { isAccessible: clubAccess},
-        new: { isAccessible: clubAccess, before:beforeNewEvent, after:afterNewEvent},
-        bulkDelete:{ isAccessible: globalAccess},
-    },
-    navigation:clubNavigation
-}
+        list: {isAccessible: clubAccess, before: beforeNewsListing},
+        edit: { isAccessible: clubAccess },
+        delete: { isAccessible: clubAccess, },
+        new: { isAccessible: clubAccess, before: beforeNewEvent, after: afterNewEvent },
+        bulkDelete: { isAccessible: globalAccess },
+        },
+    }
+
 
 module.exports.campusTravel = {
-    id:"Travel",
-    actions: {
-        list: { isAccessible: globalAccess},
-        edit: { isAccessible: globalAccess},
-        delete: { isAccessible: globalAccess},
-        new: { isAccessible: globalAccess},
-        bulkDelete:{ isAccessible: globalAccess},
-    },
-    navigation:cabSharingNavigation
-}
+        id: "Travel Posts",
+        properties: {
+            _id: {
+                isVisible: {
+                    list: false,
+                    filter: false,
+                    show: false,
+                    edit: false,
+                },
+            },
+            chatId: {
+                isVisible: {
+                    list: false,
+                    filter: true,
+                    show: true,
+                    edit: false,
+                }
+            },
+            email: {
+                isVisible: {
+                    list: true,
+                    filter: true,
+                    show: true,
+                    edit: false,
+                },
+            },
+            name: {
+                isVisible: {
+                    list: false,
+                    filter: true,
+                    show: true,
+                    edit: false,
+                },
+            },
+            phonenumber: {
+                isVisible: {
+                    list: false,
+                    filter: true,
+                    show: true,
+                    edit: true,
+                },
+            }
+        },
+        actions: {
+            list: { isAccessible: globalAccess },
+            edit: { isAccessible: globalAccess },
+            delete: { isAccessible: globalAccess, before: beforeDelEvent },
+            new: { isAccessible: globalAccess, before: beforeNewTravel, after: afterNewTravel },
+            bulkDelete: { isAccessible: globalAccess },
+        },
+        navigation: cabSharingNavigation
+    }
+
+
+module.exports.travelReply = {
+        id: "Replies",
+        properties: {
+            _id: {
+                isVisible: {
+                    list: false,
+                    filter: false,
+                    show: false,
+                    edit: false,
+                },
+            },
+            message: {
+                isVisible: {
+                    list: false,
+                    filter: true,
+                    show: true,
+                    edit: true,
+                },
+            },
+        },
+        actions: {
+            list: { isAccessible: globalAccess },
+            edit: { isAccessible: false },
+            delete: { isAccessible: globalAccess },
+            new: { isAccessible: false },
+            bulkDelete: { isAccessible: globalAccess },
+        },
+        navigation: cabSharingNavigation
+    }

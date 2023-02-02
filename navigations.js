@@ -4,7 +4,7 @@ module.exports. usersNavigation = {
   };
   module.exports. gcNavigation = {
     name: "General Championship",
-    icon: "TrophyFilled",
+    icon: "Trophy",
   };
   
   module.exports. timingNavigation = {
@@ -33,8 +33,8 @@ module.exports. usersNavigation = {
   };
 
   module.exports. clubNavigation = {
-    name: "Club",
-    icon: "People",
+    name: "News",
+    icon: "NewsPaper",
   };
 
   

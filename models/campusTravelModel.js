@@ -1,15 +1,17 @@
 const mongoose = require("mongoose");
 
+const travelEnums = ['Campus','Airport','RailwayStation'];
+
 const TravelPostSchema = new mongoose.Schema({
     "email": { type: String, required: true },
     "name": { type: String, required: true },
     "travelDateTime": { type: Date, required: true },
-    "to": { type: String, required: true },
-    "from": { type: String, required: true },
+    "to": { type: String, required: true, enum:travelEnums},
+    "from": { type: String, required: true, enum:travelEnums},
     "margin": { type: Number, required: true },
     "note": { type: String, required: true },
     "phonenumber": { type: String },
-    "chatId": { type: String, required: true }
+    "chatId": { type: String }
 });
 
 const ReplyPostSchema = new mongoose.Schema({
@@ -19,7 +21,8 @@ const ReplyPostSchema = new mongoose.Schema({
 });
 
 const ChatSchema = new mongoose.Schema({
-    "replies": [ReplyPostSchema]
+    "replies": [ReplyPostSchema],
+    "postId":{ type: String}
 });
 
 

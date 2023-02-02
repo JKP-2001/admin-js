@@ -21,7 +21,7 @@ const Admin = require("../models/Admin")
 const newsEvent = require("../models/newsevent");
 const messMenu = require('../models/messMenu');
 const { globalAccess, hmcAccess } = require('../config/adminjs/roleBasedAccess');
-const { adminOptions, hmcOptions, clubAccess, clubOptions, campusTravel } = require('../config/adminjs/resourceOptions');
+const { adminOptions, hmcOptions, clubAccess, clubOptions, campusTravel, normalUserOptions, travelReply } = require('../config/adminjs/resourceOptions');
 const { newsFileUpload } = require("../config/features/newsFileUpload");
 const { messFileUpload } = require("../config/features/messMenuUpload");
 
@@ -66,32 +66,41 @@ const usersNavigation = {
 
 const adminRouter = new AdminJS({
   resources: [
+    
     {
       resource: Admin,
       options: adminOptions,
     },
+
+    {
+      resource: User,
+      options: normalUserOptions
+    },
+
     {
       resource: messMenu,
       options:hmcOptions,
       features:[messFileUpload]
     },
+
     {
       resource: newsEvent,
       options: clubOptions,
       features: [newsFileUpload],
     },
+
     {
       resource: TravelPostModel,
       options:campusTravel
       // options: clubOptions,
       // features: [c],
     },
+
     {
-      resource: User,
-      options: {
-        navigation: usersNavigation,
-      },
+      resource: ReplyPostModel,
+      options: travelReply
     },
+
     {
       resource: spardhaEventModel,
       options: {
@@ -135,19 +144,7 @@ const adminRouter = new AdminJS({
       },
     },
     {
-      resource: TravelPostModel,
-      options: {
-        navigation: cabSharingNavigation,
-      },
-    },
-    {
       resource: TravelChatModel,
-      options: {
-        navigation: cabSharingNavigation,
-      },
-    },
-    {
-      resource: ReplyPostModel,
       options: {
         navigation: cabSharingNavigation,
       },
