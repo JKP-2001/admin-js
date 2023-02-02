@@ -1,6 +1,7 @@
 const {TravelPostModel, TravelChatModel, ReplyPostModel} = require("../models/campusTravelModel");
 
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
+const { getUserRole } = require("../functions");
 
 
 
@@ -30,6 +31,21 @@ module.exports.beforeDelEvent = async (request, { currentAdmin }) => {
 
     const chat = await TravelChatModel.findOneAndDelete({postId:request.params.recordId});
     return request;
+}
+
+module.exports.beforeTravelPostListing = async (request, context) => {
+    const { currentAdmin } = context
+    const arr = getUserRole(currentAdmin.role);
+    if (!arr.includes('SUPER_ADMIN')) {
+        return {
+            ...request,
+            query: {
+                ...request.query,
+                'filters.email': currentAdmin.email ? currentAdmin.email : ''
+            }
+        }
+    }
+    return request
 }
 
 // module.exports.afterNewMenu = async (request, { currentAdmin }) => {

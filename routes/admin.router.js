@@ -21,7 +21,7 @@ const Admin = require("../models/Admin")
 const newsEvent = require("../models/newsevent");
 const messMenu = require('../models/messMenu');
 const { globalAccess, hmcAccess } = require('../config/adminjs/roleBasedAccess');
-const { adminOptions, hmcOptions, clubAccess, clubOptions, campusTravel, normalUserOptions, travelReply } = require('../config/adminjs/resourceOptions');
+const { adminOptions, hmcOptions, clubAccess, clubOptions, campusTravel, normalUserOptions, travelReply, travelChat, campusTravelOtions, campusTravelOptions, travelReplyOptions, travelChatOptions, buyOptions, sellOptions, lostItemOptions, foundItemOptions, foodOutletSchema, foodItemOptions, foodOutletOptions, lastUpdateOption } = require('../config/adminjs/resourceOptions');
 const { newsFileUpload } = require("../config/features/newsFileUpload");
 const { messFileUpload } = require("../config/features/messMenuUpload");
 
@@ -91,14 +91,19 @@ const adminRouter = new AdminJS({
 
     {
       resource: TravelPostModel,
-      options:campusTravel
+      options:campusTravelOptions
       // options: clubOptions,
       // features: [c],
     },
 
     {
       resource: ReplyPostModel,
-      options: travelReply
+      options: travelReplyOptions
+    },
+
+    {
+      resource: TravelChatModel,
+      options: travelChatOptions,
     },
 
     {
@@ -144,52 +149,32 @@ const adminRouter = new AdminJS({
       },
     },
     {
-      resource: TravelChatModel,
-      options: {
-        navigation: cabSharingNavigation,
-      },
-    },
-    {
       resource: foodItems,
-      options: {
-        navigation: foodNavigation,
-      },
+      options: foodItemOptions,
     },
     {
       resource: foodOutlets,
-      options: {
-        navigation: foodNavigation,
-      },
+      options: foodOutletOptions,
     },
     {
       resource: lastUpdate,
-      options: {
-        navigation: foodNavigation,
-      },
+      options: lastUpdateOption,
     },
     {
       resource: LostAndFoundDetails,
-      options: {
-        navigation: lostAndFoundNavigaion,
-      },
+      options: lostItemOptions,
     },
     {
       resource: foundItem,
-      options: {
-        navigation: lostAndFoundNavigaion,
-      },
+      options: foundItemOptions,
     },
     {
       resource: buyDetails,
-      options: {
-        navigation: buyAndSellNavigation,
-      },
+      options: buyOptions,
     },
     {
       resource: BuyAndSellDetails,
-      options: {
-        navigation: buyAndSellNavigation,
-      },
+      options: sellOptions,
     },
   ],
   rootPath: "/admin",
@@ -206,8 +191,6 @@ const adminRouter = new AdminJS({
 });
 
 adminRouter.watch();
-
-// adminRouter.overrideLogin({ component: Login });
 
 let router;
 

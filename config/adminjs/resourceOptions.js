@@ -4,8 +4,8 @@ const { afterNewEvent, beforeNewEvent, beforeNewsListing } = require("../../cont
 const { globalAccess, adminAccess, clubAccess, hmcAccess } = require("./roleBasedAccess");
 
 const AdminJS = require('adminjs');
-const { usersNavigation, foodNavigation, clubNavigation, cabSharingNavigation } = require("../../navigations");
-const { beforeNewTravel, beforeDelEvent, afterNewTravel } = require("../../controllers/travelController");
+const { usersNavigation, foodNavigation, clubNavigation, cabSharingNavigation, buyAndSellNavigation, lostAndFoundNavigaion } = require("../../navigations");
+const { beforeNewTravel, beforeDelEvent, afterNewTravel, beforeTravelPostListing } = require("../../controllers/travelController");
 
 
 module.exports.adminOptions = {
@@ -102,7 +102,7 @@ module.exports.hmcOptions = {
         },
     },
     actions: {
-        list: { isAccessible: hmcAccess, before:beforeMenuListing },
+        list: { isAccessible: hmcAccess, before: beforeMenuListing },
         edit: { isAccessible: hmcAccess, before: beforeNewMenu },
         delete: { isAccessible: globalAccess },
         new: { isAccessible: globalAccess, before: beforeNewMenu },
@@ -191,96 +191,206 @@ module.exports.clubOptions = {
         }
     },
     actions: {
-        list: {isAccessible: clubAccess, before: beforeNewsListing},
+        list: { isAccessible: clubAccess, before: beforeNewsListing },
         edit: { isAccessible: clubAccess },
         delete: { isAccessible: clubAccess, },
         new: { isAccessible: clubAccess, before: beforeNewEvent, after: afterNewEvent },
         bulkDelete: { isAccessible: globalAccess },
+    },
+}
+
+
+module.exports.campusTravelOptions = {
+    id: "Travel Posts",
+    properties: {
+        _id: {
+            isVisible: {
+                list: false,
+                filter: false,
+                show: false,
+                edit: false,
+            },
         },
-    }
-
-
-module.exports.campusTravel = {
-        id: "Travel Posts",
-        properties: {
-            _id: {
-                isVisible: {
-                    list: false,
-                    filter: false,
-                    show: false,
-                    edit: false,
-                },
-            },
-            chatId: {
-                isVisible: {
-                    list: false,
-                    filter: true,
-                    show: true,
-                    edit: false,
-                }
-            },
-            email: {
-                isVisible: {
-                    list: true,
-                    filter: true,
-                    show: true,
-                    edit: false,
-                },
-            },
-            name: {
-                isVisible: {
-                    list: false,
-                    filter: true,
-                    show: true,
-                    edit: false,
-                },
-            },
-            phonenumber: {
-                isVisible: {
-                    list: false,
-                    filter: true,
-                    show: true,
-                    edit: true,
-                },
+        chatId: {
+            isVisible: {
+                list: false,
+                filter: true,
+                show: true,
+                edit: false,
             }
         },
-        actions: {
-            list: { isAccessible: globalAccess },
-            edit: { isAccessible: globalAccess },
-            delete: { isAccessible: globalAccess, before: beforeDelEvent },
-            new: { isAccessible: globalAccess, before: beforeNewTravel, after: afterNewTravel },
-            bulkDelete: { isAccessible: globalAccess },
-        },
-        navigation: cabSharingNavigation
-    }
-
-
-module.exports.travelReply = {
-        id: "Replies",
-        properties: {
-            _id: {
-                isVisible: {
-                    list: false,
-                    filter: false,
-                    show: false,
-                    edit: false,
-                },
-            },
-            message: {
-                isVisible: {
-                    list: false,
-                    filter: true,
-                    show: true,
-                    edit: true,
-                },
+        email: {
+            isVisible: {
+                list: true,
+                filter: true,
+                show: true,
+                edit: false,
             },
         },
-        actions: {
-            list: { isAccessible: globalAccess },
-            edit: { isAccessible: false },
-            delete: { isAccessible: globalAccess },
-            new: { isAccessible: false },
-            bulkDelete: { isAccessible: globalAccess },
+        name: {
+            isVisible: {
+                list: false,
+                filter: true,
+                show: true,
+                edit: false,
+            },
         },
-        navigation: cabSharingNavigation
-    }
+        phonenumber: {
+            isVisible: {
+                list: false,
+                filter: true,
+                show: true,
+                edit: true,
+            },
+        }
+    },
+    actions: {
+        list: { isAccessible: true, before: beforeTravelPostListing },
+        edit: { isAccessible: true },
+        delete: { isAccessible: true, before: beforeDelEvent },
+        new: { isAccessible: true, before: beforeNewTravel, after: afterNewTravel },
+        bulkDelete: { isAccessible: globalAccess },
+    },
+    navigation: cabSharingNavigation
+}
+
+
+module.exports.travelReplyOptions = {
+    id: "Replies",
+    properties: {
+        _id: {
+            isVisible: {
+                list: false,
+                filter: false,
+                show: false,
+                edit: false,
+            },
+        },
+        message: {
+            isVisible: {
+                list: false,
+                filter: true,
+                show: true,
+                edit: true,
+            },
+        },
+    },
+    actions: {
+        list: { isAccessible: globalAccess },
+        edit: { isAccessible: false },
+        delete: { isAccessible: globalAccess },
+        new: { isAccessible: false },
+        bulkDelete: { isAccessible: globalAccess },
+    },
+    navigation: cabSharingNavigation
+}
+
+module.exports.travelChatOptions = {
+    id: "Travel Chat",
+    properties: {
+        _id: {
+            isVisible: {
+                list: false,
+                filter: false,
+                show: false,
+                edit: false,
+            },
+        }
+    },
+    actions: {
+        list: { isAccessible: globalAccess },
+        edit: { isAccessible: false },
+        delete: { isAccessible: globalAccess },
+        new: { isAccessible: false },
+        bulkDelete: { isAccessible: globalAccess },
+    },
+    navigation: cabSharingNavigation
+}
+
+
+module.exports.buyOptions = {
+    id:'Buy Item',
+    navigation:buyAndSellNavigation,
+    actions: {
+        list: { isAccessible: globalAccess },
+        edit: { isAccessible: false },
+        delete: { isAccessible: globalAccess },
+        new: { isAccessible: false },
+        bulkDelete: { isAccessible: globalAccess },
+    },
+}
+
+
+module.exports.sellOptions = {
+    id:'Sell Item',
+    navigation:buyAndSellNavigation,
+    actions: {
+        list: { isAccessible: globalAccess },
+        edit: { isAccessible: false },
+        delete: { isAccessible: globalAccess },
+        new: { isAccessible: false },
+        bulkDelete: { isAccessible: globalAccess },
+    },
+}
+
+module.exports.lostItemOptions = {
+    id:'Lost Item',
+    navigation:lostAndFoundNavigaion,
+    actions: {
+        list: { isAccessible: globalAccess },
+        edit: { isAccessible: false },
+        delete: { isAccessible: globalAccess },
+        new: { isAccessible: false },
+        bulkDelete: { isAccessible: globalAccess },
+    },
+}
+
+module.exports.foundItemOptions = {
+    id:'Found Item',
+    navigation:lostAndFoundNavigaion,
+    actions: {
+        list: { isAccessible: globalAccess },
+        edit: { isAccessible: false },
+        delete: { isAccessible: globalAccess },
+        new: { isAccessible: false },
+        bulkDelete: { isAccessible: globalAccess },
+    },
+}
+
+module.exports.foodOutletOptions = {
+    id:'Food Oulet',
+    navigation:foodNavigation,
+    actions: {
+        list: { isAccessible: true },
+        edit: { isAccessible: globalAccess },
+        delete: { isAccessible: globalAccess },
+        new: { isAccessible: globalAccess, isAccessible:hmcAccess },
+        bulkDelete: { isAccessible: globalAccess },
+    },
+}
+
+
+module.exports.foodItemOptions = {
+    id:'Food Item',
+    navigation:foodNavigation,
+    actions: {
+        list: { isAccessible: true },
+        edit: { isAccessible: globalAccess },
+        delete: { isAccessible: globalAccess },
+        new: { isAccessible: globalAccess, isAccessible:hmcAccess },
+        bulkDelete: { isAccessible: globalAccess },
+    },
+}
+
+module.exports.lastUpdateOption = {
+    id:'Last Update',
+    navigation:foodNavigation,
+    actions: {
+        list: { isAccessible: true },
+        edit: { isAccessible: false },
+        delete: { isAccessible: false },
+        new: { isAccessible: false },
+        bulkDelete: { isAccessible: false },
+        filter:{isAccessible:false}
+    },
+}

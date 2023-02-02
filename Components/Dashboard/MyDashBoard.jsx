@@ -7,7 +7,7 @@ import {
   H4,
   Text,
   Illustration,
-  IllustrationProps,
+  // IllustrationProps,
   Button,
 } from "@adminjs/design-system";
 
